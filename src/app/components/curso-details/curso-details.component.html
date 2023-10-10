@@ -1,0 +1,125 @@
+<div *ngIf="viewMode; else editable" class="course-details">
+  <div *ngIf="currentElement.id">
+  <style>
+        h2 {
+            color: #145A32;
+            font-family: Trebuchet MS;
+            text-align: center;
+        }
+    </style>
+    <h2>  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLXb8EDYWiihl10CqgF2WXV1YVXRyPwskLsYCS1uH_4A&s" alt="Logo" class="logo" style="width: 30px; height: 30px;">      UTN FRD - Cursos</h2>
+    
+    <div>
+      <label><strong>Nombre:</strong></label> {{ currentElement.nombre }}
+    </div>
+    <div>
+      <label><strong>ID Curso:</strong></label> {{ currentElement.id }}
+    </div>
+    
+    <div>
+      <label><strong>Docente:</strong></label> 
+      {{ currentElement.idDocente === 1 ? 'Sergio Viera' : currentElement.idDocente === 2 ? 'Santiago Ragazzo' : currentElement.idDocente === 3 ? 'Marcelo Bandino' : 'Desconocido' }}
+    </div>
+    
+    <div>
+      <label><strong>Tema:</strong></label>
+      {{ currentElement.tema == null ? "-" : currentElement.tema.nombre }}
+    </div>
+
+    <!-- Asigna el valor de tema.id a temaId si currentElement.tema no es nulo -->
+    <div *ngIf="currentElement.tema" class="course-theme-id">
+      {{ asignarTemaId(currentElement.tema.id) }}
+    </div>
+
+    <div>
+      <label><strong>Materiales:</strong></label>
+      <ul>
+        <li *ngFor="let materialT of materialesTema" class="material-list-item">
+          <input type="radio" [value]="materialT.id" disabled>
+          {{ materialT.titulo}}
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <label><strong>Fecha inicio:</strong></label>
+      {{ currentElement.fechaInicio }}
+    </div>
+
+    <a
+      class="m-3 btn btn-sm btn-warning"
+      routerLink="/cursos/{{ currentElement.id }}"
+    >
+      Editar
+    </a>
+  </div>
+  </div>
+  
+  <div *ngIf="!currentElement">
+    <br />
+    <p>Please click on a Post...</p>
+  </div>
+
+
+<ng-template #editable>
+
+  <div *ngIf="currentElement.id" class="edit-form">
+    <h2 style= "font-family:Trebuchet MS" >UTN FRD - Gestión de Cursos</h2>
+    <form>
+      <div class="form-group">
+        <label for="title">Nombre del curso</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          [(ngModel)]="currentElement.nombre"
+          name="title"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">Fecha inicio:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="description"
+          [(ngModel)]="currentElement.fechaInicio"
+          name="description"
+        />
+</div>
+
+	      <div class="form-group">
+        <label><strong>ID Curso:</strong></label>
+        {{ currentElement.id == null ? "-" : currentElement.id }}
+      </div>
+
+		
+		    
+      <div class="form-group">
+        <label><strong>Docente:</strong></label>
+        {{ currentElement.idDocente === 1 ? 'Sergio Viera' : currentElement.idDocente === 2 ? 'Santiago Ragazzo' : currentElement.idDocente === 3 ? 'Marcelo Bandino' : 'Desconocido' }}
+      </div>
+
+
+      <div class="form-group">
+        <label><strong>Tema:</strong></label>
+        {{ currentElement.tema == null ? "-" : currentElement.tema.nombre }}
+      </div>
+
+    </form>
+    <button class="m-3 btn btn-sm btn-danger" (click)="deleteElement()">
+      Eliminar
+    </button>
+    <button
+      type="submit"
+      class="m-3 btn btn-sm btn-success"
+      (click)="updateElement()"
+    >
+      Actualizar
+    </button>
+    <p>{{ message }}</p>
+  </div>
+  <div *ngIf="!currentElement.id">
+    <br />
+    <p>Elemento no encontrado...</p>
+  </div>
+</ng-template> 

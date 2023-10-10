@@ -1,0 +1,79 @@
+      <div *ngIf="!submitted">
+      <div class="submit-form">
+      <div class="form-group">
+      <style>
+        h2 {
+            color: #145A32;
+            font-family: Trebuchet MS;
+            text-align: center;}
+      </style>
+      <h2>UTN FRD - Gestión de Cursos</h2>
+      <label for="title">Nombre</label>
+      <input
+      type="text"
+      class="form-control"
+      id="title"
+      required
+      [(ngModel)]="curso.nombre"
+      name="title"
+      required/>
+      </div>
+      <p>ID del Curso: {{ ultimoId }}</p>
+
+      <div class="form-group">
+      <label for="docente">Docente</label>
+      <select class="form-control" id="docente" required [(ngModel)]="curso.idDocente">
+      <option value="0">Seleccione un docente</option>
+      <option value="1">Sergio Viera</option>
+      <option value="2">Santiago Ragazzo</option>
+      <option value="3">Marcelo Bandino</option>
+      </select>
+      <p>ID del profesor seleccionado: {{ curso.idDocente }}</p>
+      </div>
+
+
+      <div class="form-group">
+      <label for="tema">Tema</label>
+      <select class="form-control"  [(ngModel)]="selectedTemaId" (ngModelChange)="retrieveMaterialesPorCurso()">
+      <option value="0">Selecciona un tema</option>
+      <option *ngFor="let tema of temas" [value]="tema.id" >{{ tema.nombre }}</option>
+      </select>
+      <p>ID del tema seleccionado: {{ selectedTemaId }}</p>
+      </div>
+      
+      
+	 <div class="form-group">
+     <label for="material">Materiales</label>
+     <ul>
+     <li *ngFor="let materialT of materialesTema">
+     <input type="radio" [value]="materialT.id" [(ngModel)]="selectedMaterialId" disabled>
+     {{ materialT.titulo }}
+     </li>
+     </ul>
+
+
+     <div class="form-group">
+     <label for="fechaInicio">Fecha inicio</label>
+     <input
+      class="form-control" [class.error-input]="dateError" [class.sucess-input]="!dateError"
+      id="fechaInicio"
+      required
+      [(ngModel)]="curso.fechaInicio"
+      name="fechaInicio"
+      type="datetime-local"
+      placeholder="dd/mm/yyyy hh:mm"
+      pattern="\d{2}/\d{2}/\d{4} \d{2}:\d{2}" />
+      </div>
+      </div>
+      </div>
+
+     <button (click)="saveCurso()" class="m-3 btn btn-sm btn-success">Guardar</button>
+     </div>
+    
+     <div *ngIf="submitted">
+     <h2>Curso !</h2>
+     <button class="m-3 btn btn-sm btn-success" (click)="newCurso()">Añadir</button>
+     </div>
+ 
+
+
